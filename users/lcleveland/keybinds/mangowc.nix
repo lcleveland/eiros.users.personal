@@ -120,7 +120,7 @@ in
           mangowc_command = "spawn_shell";
           command_arguments = "dms ipc call lock lock";
         };
-        night_mode_tobble = {
+        night_mode_toggle = {
           modifier_keys = [ "SUPER" ];
           key_symbol = "n";
           mangowc_command = "spawn_shell";
