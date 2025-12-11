@@ -10,4 +10,5 @@
       inputs = inputs;
       nixosModules.default = users;
     };
+  inputs = { };
 }
