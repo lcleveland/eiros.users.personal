@@ -1,4 +1,6 @@
 { config, lib, ... }:
 {
-  config.eiros.system.hardware.keyboard.variant = "colemak_dh";
+  config = {
+    eiros.users.lcleveland.settings."xkb_rules_variant" = "colemak_dh";
+  };
 }
