@@ -3,7 +3,7 @@ let
   eiros_dms = config.eiros.system.desktop_environment.dank_material_shell.enable;
 in
 {
-  config.eiros.users.eiros = {
+  config.eiros.users.lcleveland = {
     mangowc = {
       keybinds = {
         launch_spotlight = lib.mkIf config.eiros.system.desktop_environment.dank_material_shell.enable {
