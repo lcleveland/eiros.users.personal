@@ -125,7 +125,7 @@ in
           key_symbol = "n";
           mangowc_command = "spawn_shell";
           command_arguments = "dms ipc call night toggle";
-        }
+        };
       };
     };
   };
