@@ -28,6 +28,13 @@ in
           key_symbol = "q";
           mangowc_command = "quit";
         };
+        launch_file_browser = {
+          modifier_keys = [ "SUPER" ];
+          flag_modifiers = [ "s" ];
+          key_symbol = "t";
+          mangowc_command = "spawn";
+          command_arguments = "ghostty -e yazi";
+        };
         launch_terminal = {
           modifier_keys = [ "SUPER" ];
           flag_modifiers = [ "s" ];
