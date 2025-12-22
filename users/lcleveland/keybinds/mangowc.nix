@@ -31,7 +31,7 @@ in
         launch_file_browser = {
           modifier_keys = [ "SUPER" ];
           flag_modifiers = [ "s" ];
-          key_symbol = "t";
+          key_symbol = "f";
           mangowc_command = "spawn";
           command_arguments = "ghostty -e yazi";
         };
