@@ -112,7 +112,7 @@ in
     };
   };
 
-  config = lib.mkIf config.services.ninjaone.enable {
+  config = {
     environment.systemPackages = [
       config.services.ninjaone.package
       ninjaoneDesktopEntry
