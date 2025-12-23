@@ -10,7 +10,8 @@
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       vscodevim.vim
-      ms-windows-ai-studio.windows-ai-studio
+      github.copilot
+      github.copilot-chat
     ];
   };
 }
