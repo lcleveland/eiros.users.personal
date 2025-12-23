@@ -1,4 +1,9 @@
 # users/lcleveland/applications/ninjaone.nix
+#
+# Always-on NinjaOne ncplayer RPM packaging.
+# No enable gate.
+# No extra desktop-entry derivation (desktop file is generated inside the package).
+
 {
   config,
   pkgs,
@@ -77,6 +82,18 @@ let
           --prefix LD_LIBRARY_PATH : "${runtimeLibPath}" \
           --prefix XDG_DATA_DIRS : "$out/share"
       fi
+
+      # Desktop entry produced inside this derivation output.
+      mkdir -p "$out/share/applications"
+      cat > "$out/share/applications/ninjarmm-ncplayer.desktop" <<EOF
+      [Desktop Entry]
+      Name=NinjaOne Remote
+      Type=Application
+      Terminal=false
+      Exec=$out/bin/ncplayer -u %u
+      MimeType=x-scheme-handler/ninjarmm;
+      Categories=Network;RemoteAccess;
+      EOF
     '';
 
     meta = with lib; {
@@ -85,43 +102,15 @@ let
       platforms = [ "x86_64-linux" ];
     };
   };
-
-  # System-level desktop entry package (guaranteed to land in /run/current-system/sw/share/applications)
-  ninjaoneDesktopEntry = pkgs.writeTextFile {
-    name = "ninjarmm-ncplayer-desktop-entry";
-    destination = "/share/applications/ninjarmm-ncplayer.desktop";
-    text = ''
-      [Desktop Entry]
-      Name=NinjaOne Remote
-      Type=Application
-      Terminal=false
-      Exec=${ninjarmm-ncplayer}/bin/ncplayer -u %u
-      MimeType=x-scheme-handler/ninjarmm;
-      Categories=Network;RemoteAccess;
-    '';
-  };
 in
 {
-  options.services.ninjaone = {
-    enable = lib.mkEnableOption "NinjaOne Ninja Remote client (ncplayer)";
-
-    package = lib.mkOption {
-      type = lib.types.package;
-      default = ninjarmm-ncplayer;
-      description = "Package providing NinjaOne ncplayer (RPM repackaged).";
-    };
-  };
-
   config = {
-    environment.systemPackages = [
-      config.services.ninjaone.package
-      ninjaoneDesktopEntry
-    ];
+    environment.systemPackages = [ ninjarmm-ncplayer ];
 
-    # Ensure .desktop files are linked into the system profile.
+    # Ensure application desktop files from systemPackages get linked into the system profile.
     environment.pathsToLink = (config.environment.pathsToLink or [ ]) ++ [ "/share/applications" ];
 
-    # Set defaults in a place GIO reliably reads.
+    # System-wide default handler for ninjarmm://
     environment.etc."xdg/mimeapps.list".text = ''
       [Default Applications]
       x-scheme-handler/ninjarmm=ninjarmm-ncplayer.desktop;
