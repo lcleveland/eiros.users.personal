@@ -1,9 +1,3 @@
-# users/lcleveland/applications/ninjaone.nix
-#
-# Always-on NinjaOne ncplayer RPM packaging.
-# No enable gate.
-# No extra desktop-entry derivation (desktop file is generated inside the package).
-
 {
   config,
   pkgs,
@@ -52,6 +46,7 @@ let
       pkgs.makeWrapper
     ];
 
+    # autoPatchelfHook looks in buildInputs to satisfy DT_NEEDED
     buildInputs = runtimeDeps;
 
     unpackPhase = ''
@@ -60,6 +55,8 @@ let
 
     installPhase = ''
       mkdir -p "$out"
+
+      # Most RPM payloads are rooted at /usr
       if [ -d usr ]; then
         cp -R usr/* "$out/"
       else
@@ -74,7 +71,7 @@ let
     '';
 
     postFixup = ''
-      # Remove broken build-id symlinks from RPM.
+      # RPM ships build-id symlinks pointing outside the store; remove to satisfy fixup checks.
       rm -rf "$out/lib/.build-id" || true
 
       if [ -x "$out/bin/ncplayer" ]; then
@@ -83,7 +80,7 @@ let
           --prefix XDG_DATA_DIRS : "$out/share"
       fi
 
-      # Desktop entry produced inside this derivation output.
+      # Provide a desktop entry in the package output
       mkdir -p "$out/share/applications"
       cat > "$out/share/applications/ninjarmm-ncplayer.desktop" <<EOF
       [Desktop Entry]
@@ -105,13 +102,15 @@ let
 in
 {
   config = {
-    environment.systemPackages = [ ninjarmm-ncplayer ];
+    # Always install the package
+    environment.systemPackages = lib.mkAfter [ ninjarmm-ncplayer ];
 
-    # Ensure application desktop files from systemPackages get linked into the system profile.
-    environment.pathsToLink = (config.environment.pathsToLink or [ ]) ++ [ "/share/applications" ];
+    # Ensure .desktop files from systemPackages get linked into the system profile
+    # (mkAfter avoids recursion / clobbering existing values)
+    environment.pathsToLink = lib.mkAfter [ "/share/applications" ];
 
-    # System-wide default handler for ninjarmm://
-    environment.etc."xdg/mimeapps.list".text = ''
+    # System-wide default handler (some DEs still prefer per-user defaults, but this is correct system policy)
+    environment.etc."xdg/mimeapps.list".text = lib.mkDefault ''
       [Default Applications]
       x-scheme-handler/ninjarmm=ninjarmm-ncplayer.desktop;
 
