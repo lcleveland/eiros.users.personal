@@ -1,7 +1,7 @@
 {
   description = "Reusable NixOS user configurations";
   outputs =
-    { self }@inputs:
+    { nixpkgs, self }@inputs:
     let
       import_modules = import ./resources/nix/import_modules.nix;
       users = (import_modules ./users);
@@ -10,5 +10,9 @@
       inputs = inputs;
       nixosModules.default = users;
     };
-  inputs = { };
+  inputs = {
+nixpkgs = {
+      url = "github:nixos/nixpkgs?ref=25.11";
+    };
+  };
 }
