@@ -8,8 +8,7 @@
   config = {
     services.ollama = {
       enable = true;
-      acceleration = "cuda";
-      package = pkgs.ollama-cuda;
+      package = pkgs.ollama-vulkan;
     };
   };
 }
