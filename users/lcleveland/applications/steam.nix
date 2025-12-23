@@ -1,6 +1,6 @@
-{ config, lib, ...}:
+{ config, lib, ... }:
 {
-config.programs.steam = {
-enable = true;
-};
+  config.programs.steam = {
+    enable = true;
+  };
 }

@@ -8,11 +8,11 @@
     {
       inputs = inputs;
       nixosModules.default = {
-imports = import_modules ./users;
-};
+        imports = import_modules ./users;
+      };
     };
   inputs = {
-nixpkgs = {
+    nixpkgs = {
       url = "github:nixos/nixpkgs?ref=25.11";
     };
   };
