@@ -9,7 +9,6 @@
 let
   version = "11.35.7720";
 
-  # Typical runtime deps for vendor GUI apps; extend if autoPatchelf complains.
   runtimeDeps = [
     pkgs.stdenv.cc.cc
     pkgs.zlib
@@ -38,8 +37,6 @@ let
 
     src = pkgs.fetchurl {
       url = "https://resources.ninjarmm.com/development/ninjacontrol/${version}/ninjarmm-ncplayer-${version}_x86_64.rpm";
-      # Fill with:
-      # nix store prefetch-file "https://resources.ninjarmm.com/development/ninjacontrol/11.35.7720/ninjarmm-ncplayer-11.35.7720_x86_64.rpm"
       hash = "sha256-maOFIZm0kbxzq6sJMHSdcWfAXbss4r2vPRxpG+Clvtw=";
     };
 
@@ -50,7 +47,6 @@ let
       pkgs.makeWrapper
     ];
 
-    # autoPatchelfHook uses these to satisfy DT_NEEDED libs
     buildInputs = runtimeDeps;
 
     unpackPhase = ''
@@ -65,7 +61,6 @@ let
         cp -R . "$out/"
       fi
 
-      # This RPM commonly installs under /opt/ncplayer; expose a stable $out/bin/ncplayer.
       if [ -x "$out/opt/ncplayer/bin/ncplayer" ]; then
         mkdir -p "$out/bin"
         ln -sf "$out/opt/ncplayer/bin/ncplayer" "$out/bin/ncplayer"
@@ -73,8 +68,6 @@ let
     '';
 
     postFixup = ''
-      # RPM contains build-id symlinks that point to /opt/... paths outside the Nix store.
-      # Nix fails the build on dangling symlinks, so remove the build-id tree.
       rm -rf "$out/lib/.build-id" || true
 
       if [ -x "$out/bin/ncplayer" ]; then
@@ -83,14 +76,13 @@ let
           --prefix XDG_DATA_DIRS : "$out/share"
       fi
 
-      # Ensure a URL scheme handler desktop entry exists for ninjarmm:// links.
       mkdir -p "$out/share/applications"
-      cat > "$out/share/applications/ninjarmm-ncplayer.desktop" <<'EOF'
+      cat > "$out/share/applications/ninjarmm-ncplayer.desktop" <<EOF
       [Desktop Entry]
       Name=NinjaOne Remote
       Type=Application
       Terminal=false
-      Exec=ncplayer -u %u
+      Exec=$out/bin/ncplayer -u %u
       MimeType=x-scheme-handler/ninjarmm;
       Categories=Network;RemoteAccess;
       EOF
@@ -106,7 +98,6 @@ in
 {
   options.services.ninjaone = {
     enable = lib.mkEnableOption "NinjaOne Ninja Remote client (ncplayer)";
-
     package = lib.mkOption {
       type = lib.types.package;
       default = ninjarmm-ncplayer;
@@ -114,11 +105,14 @@ in
     };
   };
 
-  config = {
+  config = lib.mkIf config.services.ninjaone.enable {
     environment.systemPackages = [ config.services.ninjaone.package ];
 
-    # Register ninjarmm:// handler
+    # Register ninjarmm:// handler (default + association)
     xdg.mime.defaultApplications = {
+      "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
+    };
+    xdg.mime.addedAssociations = {
       "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
     };
   };
