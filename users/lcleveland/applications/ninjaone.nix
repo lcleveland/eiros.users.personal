@@ -61,6 +61,7 @@ let
         cp -R . "$out/"
       fi
 
+      # RPM commonly installs under /opt/ncplayer; expose stable $out/bin/ncplayer.
       if [ -x "$out/opt/ncplayer/bin/ncplayer" ]; then
         mkdir -p "$out/bin"
         ln -sf "$out/opt/ncplayer/bin/ncplayer" "$out/bin/ncplayer"
@@ -68,6 +69,7 @@ let
     '';
 
     postFixup = ''
+      # Remove broken build-id symlinks from RPM.
       rm -rf "$out/lib/.build-id" || true
 
       if [ -x "$out/bin/ncplayer" ]; then
@@ -75,17 +77,6 @@ let
           --prefix LD_LIBRARY_PATH : "${runtimeLibPath}" \
           --prefix XDG_DATA_DIRS : "$out/share"
       fi
-
-      mkdir -p "$out/share/applications"
-      cat > "$out/share/applications/ninjarmm-ncplayer.desktop" <<EOF
-      [Desktop Entry]
-      Name=NinjaOne Remote
-      Type=Application
-      Terminal=false
-      Exec=$out/bin/ncplayer -u %u
-      MimeType=x-scheme-handler/ninjarmm;
-      Categories=Network;RemoteAccess;
-      EOF
     '';
 
     meta = with lib; {
@@ -94,10 +85,26 @@ let
       platforms = [ "x86_64-linux" ];
     };
   };
+
+  # System-level desktop entry package (guaranteed to land in /run/current-system/sw/share/applications)
+  ninjaoneDesktopEntry = pkgs.writeTextFile {
+    name = "ninjarmm-ncplayer-desktop-entry";
+    destination = "/share/applications/ninjarmm-ncplayer.desktop";
+    text = ''
+      [Desktop Entry]
+      Name=NinjaOne Remote
+      Type=Application
+      Terminal=false
+      Exec=${ninjarmm-ncplayer}/bin/ncplayer -u %u
+      MimeType=x-scheme-handler/ninjarmm;
+      Categories=Network;RemoteAccess;
+    '';
+  };
 in
 {
   options.services.ninjaone = {
     enable = lib.mkEnableOption "NinjaOne Ninja Remote client (ncplayer)";
+
     package = lib.mkOption {
       type = lib.types.package;
       default = ninjarmm-ncplayer;
@@ -108,25 +115,13 @@ in
   config = lib.mkIf config.services.ninjaone.enable {
     environment.systemPackages = [
       config.services.ninjaone.package
+      ninjaoneDesktopEntry
     ];
 
-    # Create the desktop entry in the *system profile* (so GIO can discover it)
-    xdg.desktopEntries.ninjarmm-ncplayer = {
-      name = "NinjaOne Remote";
-      type = "Application";
-      terminal = false;
+    # Ensure .desktop files are linked into the system profile.
+    environment.pathsToLink = (config.environment.pathsToLink or [ ]) ++ [ "/share/applications" ];
 
-      # absolute exec (avoid PATH issues)
-      exec = "${config.services.ninjaone.package}/bin/ncplayer -u %u";
-
-      categories = [
-        "Network"
-        "RemoteAccess"
-      ];
-      mimeType = [ "x-scheme-handler/ninjarmm" ];
-    };
-
-    # Ensure the system has an explicit default handler (GIO consults this)
+    # Set defaults in a place GIO reliably reads.
     environment.etc."xdg/mimeapps.list".text = ''
       [Default Applications]
       x-scheme-handler/ninjarmm=ninjarmm-ncplayer.desktop;
