@@ -4,11 +4,12 @@
     { nixpkgs, self }@inputs:
     let
       import_modules = import ./resources/nix/import_modules.nix;
-      users = (import_modules ./users);
     in
     {
       inputs = inputs;
-      nixosModules.default = users;
+      nixosModules.default = {
+imports = import_modules ./users;
+};
     };
   inputs = {
 nixpkgs = {
