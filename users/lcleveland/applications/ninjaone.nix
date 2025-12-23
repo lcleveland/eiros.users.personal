@@ -108,23 +108,31 @@ in
   config = lib.mkIf config.services.ninjaone.enable {
     environment.systemPackages = [
       config.services.ninjaone.package
-      pkgs.desktop-file-utils
     ];
 
-    # Make sure .desktop files from systemPackages get linked into the system profile.
-    environment.pathsToLink = (config.environment.pathsToLink or [ ]) ++ [ "/share/applications" ];
+    # Create the desktop entry in the *system profile* (so GIO can discover it)
+    xdg.desktopEntries.ninjarmm-ncplayer = {
+      name = "NinjaOne Remote";
+      type = "Application";
+      terminal = false;
 
-    # Your original intent (kept)
-    xdg.mime.defaultApplications = {
-      "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
-    };
-    xdg.mime.addedAssociations = {
-      "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
+      # absolute exec (avoid PATH issues)
+      exec = "${config.services.ninjaone.package}/bin/ncplayer -u %u";
+
+      categories = [
+        "Network"
+        "RemoteAccess"
+      ];
+      mimeType = [ "x-scheme-handler/ninjarmm" ];
     };
 
-    # Refresh desktop MIME cache (helps GIO/portals on some desktops)
-    system.activationScripts.ninjaoneDesktopDb = ''
-      ${pkgs.desktop-file-utils}/bin/update-desktop-database /run/current-system/sw/share/applications >/dev/null 2>&1 || true
+    # Ensure the system has an explicit default handler (GIO consults this)
+    environment.etc."xdg/mimeapps.list".text = ''
+      [Default Applications]
+      x-scheme-handler/ninjarmm=ninjarmm-ncplayer.desktop;
+
+      [Added Associations]
+      x-scheme-handler/ninjarmm=ninjarmm-ncplayer.desktop;
     '';
   };
 }
