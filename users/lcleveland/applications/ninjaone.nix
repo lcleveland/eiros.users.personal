@@ -40,7 +40,7 @@ let
       url = "https://resources.ninjarmm.com/development/ninjacontrol/${version}/ninjarmm-ncplayer-${version}_x86_64.rpm";
       # Fill with:
       # nix store prefetch-file "https://resources.ninjarmm.com/development/ninjacontrol/11.35.7720/ninjarmm-ncplayer-11.35.7720_x86_64.rpm"
-      hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+      hash = "sha256-maOFIZm0kbxzq6sJMHSdcWfAXbss4r2vPRxpG+Clvtw=";
     };
 
     nativeBuildInputs = [
