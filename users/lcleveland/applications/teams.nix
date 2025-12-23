@@ -6,6 +6,6 @@
 }:
 {
   config.environment.systemPackages = [
-    pkgs.teams
+    pkgs.teams-for-linux
   ];
 }
