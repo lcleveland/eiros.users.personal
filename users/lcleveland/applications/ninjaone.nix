@@ -106,14 +106,25 @@ in
   };
 
   config = lib.mkIf config.services.ninjaone.enable {
-    environment.systemPackages = [ config.services.ninjaone.package ];
+    environment.systemPackages = [
+      config.services.ninjaone.package
+      pkgs.desktop-file-utils
+    ];
 
-    # Register ninjarmm:// handler (default + association)
+    # Make sure .desktop files from systemPackages get linked into the system profile.
+    environment.pathsToLink = (config.environment.pathsToLink or [ ]) ++ [ "/share/applications" ];
+
+    # Your original intent (kept)
     xdg.mime.defaultApplications = {
       "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
     };
     xdg.mime.addedAssociations = {
       "x-scheme-handler/ninjarmm" = [ "ninjarmm-ncplayer.desktop" ];
     };
+
+    # Refresh desktop MIME cache (helps GIO/portals on some desktops)
+    system.activationScripts.ninjaoneDesktopDb = ''
+      ${pkgs.desktop-file-utils}/bin/update-desktop-database /run/current-system/sw/share/applications >/dev/null 2>&1 || true
+    '';
   };
 }
