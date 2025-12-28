@@ -5,6 +5,9 @@ in
 {
   config.eiros.users.lcleveland = {
     mangowc = {
+      settings.mousebind = [
+        "SUPER,btn,left,moveresize,curmove"
+      ];
       keybinds = {
         launch_spotlight = lib.mkIf config.eiros.system.desktop_environment.dank_material_shell.enable {
           modifier_keys = [ "SUPER" ];
