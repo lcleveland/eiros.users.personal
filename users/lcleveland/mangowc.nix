@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  eiros_mangowc = eiros.users.lcleveland.mangowc;
+  eiros_mangowc = config.eiros.users.lcleveland.mangowc;
 in
 {
   config = {
