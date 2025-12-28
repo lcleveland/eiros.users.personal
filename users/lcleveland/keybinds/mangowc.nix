@@ -214,6 +214,46 @@ in
           mangowc_command = "view";
           command_arguments = "9";
         };
+        move_window_monitor_left = {
+          modifier_keys = [
+            "SUPER"
+            "SHIFT"
+          ];
+          flag_modifiers = [ "s" ];
+          key_symbol = "h";
+          mangowc_command = "tagmon";
+          command_arguments = "left,1";
+        };
+        move_window_monitor_right = {
+          modifier_keys = [
+            "SUPER"
+            "SHIFT"
+          ];
+          flag_modifiers = [ "s" ];
+          key_symbol = "l";
+          mangowc_command = "tagmon";
+          command_arguments = "right,1";
+        };
+        move_window_monitor_up = {
+          modifier_keys = [
+            "SUPER"
+            "SHIFT"
+          ];
+          flag_modifiers = [ "s" ];
+          key_symbol = "k";
+          mangowc_command = "tagmon";
+          command_arguments = "up,1";
+        };
+        move_window_monitor_down = {
+          modifier_keys = [
+            "SUPER"
+            "SHIFT"
+          ];
+          flag_modifiers = [ "s" ];
+          key_symbol = "j";
+          mangowc_command = "tagmon";
+          command_arguments = "down,1";
+        };
       };
     };
   };
