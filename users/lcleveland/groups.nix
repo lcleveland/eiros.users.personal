@@ -5,5 +5,6 @@
     "networkmanager"
     "libvirtd"
     "podman"
+    "input"
   ];
 }
