@@ -15,6 +15,6 @@
       };
     };
     environment.systemPackages = [ pkgs.distrobox ];
-    eiros.users.lcleveland.extra_groups = [ "podman" ];
+    eiros.users.lcleveland.extra_groups = lib.mkAfter [ "podman" ];
   };
 }
