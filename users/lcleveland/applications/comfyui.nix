@@ -14,11 +14,15 @@
 
   services.comfyui = {
     enable = true;
-    cuda = true;
+
+    # Prefer this instead of cuda=true on 5090:
+    cudaCapabilities = [ "12.0" ]; # RTX 5090 = sm_120
+
     enableManager = true;
     port = 8188;
     listenAddress = "127.0.0.1";
     dataDir = "/var/lib/comfyui";
     openFirewall = false;
   };
+
 }
