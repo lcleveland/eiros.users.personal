@@ -1,7 +1,5 @@
 { inputs, pkgs, ... }:
 {
-  nixpkgs.overlays = [ inputs.comfyui.overlays.default ];
-
   services.comfyui = {
     enable = true;
     cuda = true;
