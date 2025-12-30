@@ -2,7 +2,6 @@
   description = "Reusable NixOS user configurations";
   outputs =
     {
-      comfyui,
       nixpkgs,
       self,
     }@inputs:
@@ -17,9 +16,6 @@
       };
     };
   inputs = {
-    comfyui = {
-      url = "github:utensils/comfyui-nix";
-    };
     nixpkgs = {
       url = "github:nixos/nixpkgs?ref=25.11";
     };
