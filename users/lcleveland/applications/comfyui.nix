@@ -14,15 +14,17 @@
 
   services.comfyui = {
     enable = true;
-
-    # Prefer this instead of cuda=true on 5090:
-    cudaCapabilities = [ "12.0" ]; # RTX 5090 = sm_120
-
     enableManager = true;
+
+    # keep this if the module requires it
+    cuda = true;
+
+    # Blackwell workaround: generate PTX that can JIT on newer GPUs
+    cudaCapabilities = [ "9.0+PTX" ];
+
     port = 8188;
     listenAddress = "127.0.0.1";
     dataDir = "/var/lib/comfyui";
     openFirewall = false;
   };
-
 }
