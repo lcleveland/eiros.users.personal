@@ -6,5 +6,6 @@
     "libvirtd"
     "podman"
     "input"
+    "comfyui"
   ];
 }
