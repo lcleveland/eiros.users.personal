@@ -217,7 +217,7 @@ in
         move_window_monitor_left = {
           modifier_keys = [
             "SUPER"
-            "SHIFT"
+            "CONTROL"
           ];
           flag_modifiers = [ "s" ];
           key_symbol = "h";
@@ -227,7 +227,7 @@ in
         move_window_monitor_right = {
           modifier_keys = [
             "SUPER"
-            "SHIFT"
+            "CONTROL"
           ];
           flag_modifiers = [ "s" ];
           key_symbol = "l";
@@ -237,7 +237,7 @@ in
         move_window_monitor_up = {
           modifier_keys = [
             "SUPER"
-            "SHIFT"
+            "CONTROL"
           ];
           flag_modifiers = [ "s" ];
           key_symbol = "k";
@@ -247,7 +247,7 @@ in
         move_window_monitor_down = {
           modifier_keys = [
             "SUPER"
-            "SHIFT"
+            "CONTROL"
           ];
           flag_modifiers = [ "s" ];
           key_symbol = "j";
