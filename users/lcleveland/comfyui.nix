@@ -6,8 +6,6 @@
   ...
 }:
 {
-  nixpkgs.overlays = [ inputs.comfyui_nix.comfyui-nix.overlays.default ];
-
   services.comfyui = {
     enable = true;
     cuda = true;
