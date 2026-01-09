@@ -1,11 +1,12 @@
 {
+  comfyui_nix,
   config,
   lib,
   pkgs,
   ...
 }:
 {
-  nixpkgs.overlays = [ comfyui-nix.overlays.default ];
+  nixpkgs.overlays = [ comfyui_nix.overlays.default ];
 
   services.comfyui = {
     enable = true;
