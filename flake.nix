@@ -2,7 +2,6 @@
   description = "Reusable NixOS user configurations";
   outputs =
     {
-      comfyui_nix,
       nixpkgs,
       self,
     }@inputs:
@@ -13,14 +12,10 @@
       inputs = inputs;
       nixosModules.default = {
         imports = (import_modules ./users) ++ [
-          comfyui_nix.nixosModules.default
         ];
       };
     };
   inputs = {
-    comfyui_nix = {
-      url = "github:utensils/comfyui-nix";
-    };
     nixpkgs = {
       url = "github:nixos/nixpkgs/nixos-unstable";
     };
