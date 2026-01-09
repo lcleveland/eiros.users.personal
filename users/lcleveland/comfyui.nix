@@ -20,7 +20,7 @@
   };
   services.comfyui = {
     enable = true;
-    cuda = true;
+    cuda = false;
     enableManager = true;
     port = 8188;
     listenAddress = "127.0.0.1";
