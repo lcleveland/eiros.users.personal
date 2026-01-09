@@ -1,4 +1,7 @@
 { config, lib, ... }:
 {
-  config.nix.settings.trusted-users = [ "lcleveland" ];
+  config.nix.settings.trusted-users = [
+    "root"
+    "lcleveland"
+  ];
 }
