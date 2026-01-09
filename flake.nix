@@ -13,7 +13,7 @@
       inputs = inputs;
       nixosModules.default = {
         imports = (import_modules ./users) ++ [
-          comfyui-nix.nixosModules.default
+          comfyui_nix.nixosModules.default
         ];
       };
     };
