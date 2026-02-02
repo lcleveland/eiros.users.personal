@@ -12,6 +12,7 @@
       vscodevim.vim
       github.copilot
       github.copilot-chat
+      platformio.platformio-vscode-ide
     ];
   };
 }
