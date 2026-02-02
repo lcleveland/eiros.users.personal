@@ -14,6 +14,7 @@
       github.copilot-chat
       platformio.platformio-vscode-ide
       ms-vscode.cpptools-extension-pack
+      ms-vscode.cpptools
     ];
   };
 }
