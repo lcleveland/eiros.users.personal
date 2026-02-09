@@ -5,7 +5,10 @@
   ...
 }:
 {
-  config.environment.systemPackages = [
-    pkgs.yubioath-flutter
-  ];
+  config = {
+    services.pcscd.enable = true;
+    environment.systemPackages = [
+      pkgs.yubioath-flutter
+    ];
+  };
 }
