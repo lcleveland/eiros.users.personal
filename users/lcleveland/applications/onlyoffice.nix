@@ -6,6 +6,6 @@
 }:
 {
   config = {
-    services.onlyoffice.enable = true;
+    environment.systemPackages = [ pkgs.onlyoffice-bin ];
   };
 }
