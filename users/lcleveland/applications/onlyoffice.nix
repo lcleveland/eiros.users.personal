@@ -6,6 +6,6 @@
 }:
 {
   config = {
-    environment.systemPackages = [ pkgs.onlyoffice-bin ];
+    environment.systemPackages = [ pkgs.onlyoffice-desktopeditors ];
   };
 }
