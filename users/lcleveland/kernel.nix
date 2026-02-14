@@ -5,5 +5,5 @@
   ...
 }:
 {
-  config.eiros.system.boot.kernel.kenel_package = pkgs.linuxPackages_6_12;
+  config.eiros.system.boot.kernel.kernel_package = pkgs.linuxPackages_6_12;
 }
