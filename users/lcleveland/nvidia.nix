@@ -1,4 +1,4 @@
 { config, lib, ... }:
 {
-  config.eiros.system.hardware.graphics.nvidia.open = false;
+  config.eiros.system.hardware.graphics.nvidia.open.enable = false;
 }
