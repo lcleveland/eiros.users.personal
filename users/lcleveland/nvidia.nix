@@ -3,5 +3,5 @@ let
   eiros_nvidia = config.eiros.system.hardware.graphics.nvidia;
 in
 {
-  eiros_nvidia.open = false;
+  config.eiros_nvidia.open = false;
 }
