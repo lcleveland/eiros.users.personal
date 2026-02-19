@@ -10,7 +10,6 @@
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       vscodevim.vim
-      github.copilot
       github.copilot-chat
       platformio.platformio-vscode-ide
       ms-vscode.cpptools-extension-pack
