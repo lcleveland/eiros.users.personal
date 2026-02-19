@@ -8,6 +8,7 @@
   config.programs.vscode = {
     enable = true;
     extensions = with pkgs.vscode-extensions; [
+      continue.continue
       jnoortheen.nix-ide
       vscodevim.vim
       github.copilot-chat
