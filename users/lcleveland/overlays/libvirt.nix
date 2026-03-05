@@ -15,7 +15,7 @@ let
     # Optional but recommended: add sha256 for reproducibility.
     # Get it once via:
     #   nix-prefetch-url --unpack https://github.com/feel-co/fp/archive/337cd82e8a07d0b2600846fc607e6706c5cd0042.tar.gz
-    # sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    # sha256 = "sha256-0ffyws293p3bb26ncrayb4k3b5ma9ssbljkxz2agp29mdjzxnqmy=";
   };
 
   # Import that nixpkgs-like tree for the same system.
