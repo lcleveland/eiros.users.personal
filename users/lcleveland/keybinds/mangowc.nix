@@ -268,7 +268,7 @@ in
           modifier_keys = [ "SUPER" ];
           flag_modifiers = [ "s" ];
           key_symbol = "v";
-          mangowc_command = "spawn_shell";
+          mangowc_command = "spawn";
           command_arguments = "dms cl paste";
         };
       };
