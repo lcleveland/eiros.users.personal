@@ -265,7 +265,7 @@ in
           command_arguments = "dms screenshot --no-file";
         };
         paste_clipboard = {
-          modifier_keys = [ "CTRL" ];
+          modifier_keys = [ "SUPER" ];
           flag_modifiers = [ "s" ];
           key_symbol = "v";
           mangowc_command = "spawn_shell";
