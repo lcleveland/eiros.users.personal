@@ -1,280 +1,147 @@
 { config, lib, ... }:
 let
-  eiros_dms = config.eiros.system.desktop_environment.dank_material_shell.enable;
+  viewTagBinds = builtins.listToAttrs (
+    map (n: {
+      name = "view_tag_${toString n}";
+      value = {
+        modifier_keys = [ "SUPER" ];
+        flag_modifiers = [ "s" ];
+        key_symbol = toString n;
+        mangowc_command = "view";
+        command_arguments = toString n;
+      };
+    }) (lib.range 1 9)
+  );
+
+  dirMap = {
+    left = "h";
+    right = "l";
+    up = "k";
+    down = "j";
+  };
+
+  mkDirBinds =
+    prefix: cmd: mods: mkArgs:
+    builtins.listToAttrs (
+      lib.mapAttrsToList (dir: key: {
+        name = "${prefix}_${dir}";
+        value = {
+          modifier_keys = mods;
+          flag_modifiers = [ "s" ];
+          key_symbol = key;
+          mangowc_command = cmd;
+          command_arguments = mkArgs dir;
+        };
+      }) dirMap
+    );
 in
 {
   config.eiros.users.lcleveland = {
     mangowc = {
-      keybinds = {
-        launch_spotlight = lib.mkIf config.eiros.system.desktop_environment.dank_material_shell.enable {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "d";
-          mangowc_command = "spawn_shell";
-          command_arguments = "dms ipc call spotlight toggle";
+      keybinds =
+        viewTagBinds
+        // (mkDirBinds "switch_focus" "focusdir" [ "SUPER" ] (dir: dir))
+        // (mkDirBinds "swap_window" "exchange_client" [ "SUPER" "SHIFT" ] (dir: dir))
+        // (mkDirBinds "move_window_monitor" "tagmon" [ "CTRL" "SHIFT" ] (dir: "${dir},1"))
+        // {
+          launch_spotlight = lib.mkIf config.eiros.system.desktop_environment.dank_material_shell.enable {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "d";
+            mangowc_command = "spawn_shell";
+            command_arguments = "dms ipc call spotlight toggle";
+          };
+          close_window = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "q";
+            mangowc_command = "killclient";
+          };
+          quit_mangowc = {
+            modifier_keys = [
+              "SUPER"
+              "SHIFT"
+            ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "q";
+            mangowc_command = "quit";
+          };
+          launch_file_browser = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "f";
+            mangowc_command = "spawn";
+            command_arguments = "ghostty -e yazi";
+          };
+          launch_terminal = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "t";
+            mangowc_command = "spawn";
+            command_arguments = "ghostty";
+          };
+          window_toggle_float = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "g";
+            mangowc_command = "togglefloating";
+          };
+          window_toggle_maximize = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "m";
+            mangowc_command = "togglemaximizescreen";
+          };
+          overview_toggle = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "Tab";
+            mangowc_command = "toggleoverview";
+          };
+          reload_configuration = {
+            modifier_keys = [
+              "SUPER"
+              "SHIFT"
+            ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "r";
+            mangowc_command = "reload_config";
+          };
+          lock_screen = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "Escape";
+            mangowc_command = "spawn_shell";
+            command_arguments = "dms ipc call lock lock";
+          };
+          night_mode_toggle = {
+            modifier_keys = [ "SUPER" ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "n";
+            mangowc_command = "spawn_shell";
+            command_arguments = "dms ipc call night toggle";
+          };
+          screenshot = {
+            modifier_keys = [
+              "SUPER"
+              "SHIFT"
+            ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "s";
+            mangowc_command = "spawn_shell";
+            command_arguments = "dms screenshot --no-file";
+          };
+          paste_clipboard = {
+            modifier_keys = [
+              "CTRL"
+              "SHIFT"
+            ];
+            flag_modifiers = [ "s" ];
+            key_symbol = "v";
+            mangowc_command = "spawn_shell";
+            command_arguments = "dms cl paste | wtype -";
+          };
         };
-        close_window = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "q";
-          mangowc_command = "killclient";
-        };
-        quit_mangowc = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "q";
-          mangowc_command = "quit";
-        };
-        launch_file_browser = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "f";
-          mangowc_command = "spawn";
-          command_arguments = "ghostty -e yazi";
-        };
-        launch_terminal = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "t";
-          mangowc_command = "spawn";
-          command_arguments = "ghostty";
-        };
-        switch_focus_left = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "h";
-          mangowc_command = "focusdir";
-          command_arguments = "left";
-        };
-        switch_focus_right = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "l";
-          mangowc_command = "focusdir";
-          command_arguments = "right";
-        };
-        switch_focus_up = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "k";
-          mangowc_command = "focusdir";
-          command_arguments = "up";
-        };
-        switch_focus_down = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "j";
-          mangowc_command = "focusdir";
-          command_arguments = "down";
-        };
-        swap_window_left = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "h";
-          mangowc_command = "exchange_client";
-          command_arguments = "left";
-        };
-        swap_window_right = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "l";
-          mangowc_command = "exchange_client";
-          command_arguments = "right";
-        };
-        swap_window_up = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "k";
-          mangowc_command = "exchange_client";
-          command_arguments = "up";
-        };
-        swap_window_down = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "j";
-          mangowc_command = "exchange_client";
-          command_arguments = "down";
-        };
-        window_toggle_float = {
-          flag_modifiers = [ "s" ];
-          modifier_keys = [ "SUPER" ];
-          key_symbol = "g";
-          mangowc_command = "togglefloating";
-        };
-        window_toggle_maximize = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "m";
-          mangowc_command = "togglemaximizescreen";
-        };
-        overview_toggle = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "Tab";
-          mangowc_command = "toggleoverview";
-        };
-        reload_configuration = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "r";
-          mangowc_command = "reload_config";
-        };
-        lock_screen = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "Escape";
-          mangowc_command = "spawn_shell";
-          command_arguments = "dms ipc call lock lock";
-        };
-        night_mode_toggle = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "n";
-          mangowc_command = "spawn_shell";
-          command_arguments = "dms ipc call night toggle";
-        };
-        view_tag_1 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "1";
-          mangowc_command = "view";
-          command_arguments = "1";
-        };
-        view_tag_2 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "2";
-          mangowc_command = "view";
-          command_arguments = "2";
-        };
-        view_tag_3 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "3";
-          mangowc_command = "view";
-          command_arguments = "3";
-        };
-        view_tag_4 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "4";
-          mangowc_command = "view";
-          command_arguments = "4";
-        };
-        view_tag_5 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "5";
-          mangowc_command = "view";
-          command_arguments = "5";
-        };
-        view_tag_6 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "6";
-          mangowc_command = "view";
-          command_arguments = "6";
-        };
-        view_tag_7 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "7";
-          mangowc_command = "view";
-          command_arguments = "7";
-        };
-        view_tag_8 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "8";
-          mangowc_command = "view";
-          command_arguments = "8";
-        };
-        view_tag_9 = {
-          modifier_keys = [ "SUPER" ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "9";
-          mangowc_command = "view";
-          command_arguments = "9";
-        };
-        move_window_monitor_left = {
-          modifier_keys = [
-            "CTRL"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "h";
-          mangowc_command = "tagmon";
-          command_arguments = "left,1";
-        };
-        move_window_monitor_right = {
-          modifier_keys = [
-            "CTRL"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "l";
-          mangowc_command = "tagmon";
-          command_arguments = "right,1";
-        };
-        move_window_monitor_up = {
-          modifier_keys = [
-            "CTRL"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "k";
-          mangowc_command = "tagmon";
-          command_arguments = "up,1";
-        };
-        move_window_monitor_down = {
-          modifier_keys = [
-            "CTRL"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "j";
-          mangowc_command = "tagmon";
-          command_arguments = "down,1";
-        };
-        screenshot = {
-          modifier_keys = [
-            "SUPER"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "s";
-          mangowc_command = "spawn_shell";
-          command_arguments = "dms screenshot --no-file";
-        };
-        paste_clipboard = {
-          modifier_keys = [
-            "CTRL"
-            "SHIFT"
-          ];
-          flag_modifiers = [ "s" ];
-          key_symbol = "v";
-          mangowc_command = "spawn_shell";
-          command_arguments = "dms cl paste | wtype -";
-        };
-      };
     };
   };
 }
