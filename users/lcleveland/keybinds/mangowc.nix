@@ -13,6 +13,22 @@ let
     }) (lib.range 1 9)
   );
 
+  moveToTagBinds = builtins.listToAttrs (
+    map (n: {
+      name = "move_to_tag_${toString n}";
+      value = {
+        modifier_keys = [
+          "SUPER"
+          "SHIFT"
+        ];
+        flag_modifiers = [ "s" ];
+        key_symbol = toString n;
+        mangowc_command = "tag";
+        command_arguments = toString n;
+      };
+    }) (lib.range 1 9)
+  );
+
   dirMap = {
     left = "h";
     right = "l";
@@ -40,6 +56,7 @@ in
     mangowc = {
       keybinds =
         viewTagBinds
+        // moveToTagBinds
         // (mkDirBinds "switch_focus" "focusdir" [ "SUPER" ] (dir: dir))
         // (mkDirBinds "swap_window" "exchange_client" [ "SUPER" "SHIFT" ] (dir: dir))
         // (mkDirBinds "move_window_monitor" "tagmon" [ "CTRL" "SHIFT" ] (dir: "${dir},1"))
