@@ -3,7 +3,6 @@ let
   inherit (builtins)
     readDir
     attrNames
-    filter
     match
     concatLists
     ;

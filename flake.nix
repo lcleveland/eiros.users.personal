@@ -10,8 +10,7 @@
     in
     {
       nixosModules.default = {
-        imports = (import_modules ./users) ++ [
-        ];
+        imports = import_modules ./users;
       };
     };
   inputs = {

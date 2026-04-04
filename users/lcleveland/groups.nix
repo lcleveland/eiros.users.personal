@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ lib, ... }:
 {
   config.eiros.users.lcleveland.extra_groups = lib.mkDefault [
     "wheel"

@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  config.environment.systemPackages = with pkgs; [
-    python3
+  config.environment.systemPackages = [
+    pkgs.python3
   ];
 }

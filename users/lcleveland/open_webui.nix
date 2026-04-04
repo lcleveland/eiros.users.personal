@@ -1,7 +1,4 @@
-{
-  config,
-  ...
-}:
+{ ... }:
 {
   config = {
     services.open-webui = {
