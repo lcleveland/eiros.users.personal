@@ -2,9 +2,13 @@
 let
   mkBind =
     mods: key: cmd: args:
+    mkBindF [ "s" ] mods key cmd args;
+
+  mkBindF =
+    flags: mods: key: cmd: args:
     {
       modifier_keys = mods;
-      flag_modifiers = [ "s" ];
+      flag_modifiers = flags;
       key_symbol = key;
       mangowc_command = cmd;
     }
@@ -17,23 +21,11 @@ let
     }) (lib.range 1 9)
   );
 
-  shiftedNumbers = [
-    "exclam"
-    "at"
-    "numbersign"
-    "dollar"
-    "percent"
-    "asciicircum"
-    "ampersand"
-    "asterisk"
-    "parenleft"
-  ];
-
   moveToTagBinds = builtins.listToAttrs (
-    lib.imap1 (n: key: {
+    map (n: {
       name = "move_to_tag_${toString n}";
-      value = mkBind [ "SUPER" ] key "tag" (toString n);
-    }) shiftedNumbers
+      value = mkBindF [ ] [ "SUPER" "SHIFT" ] (toString n) "tag" (toString n);
+    }) (lib.range 1 9)
   );
 
   dirMap = {
