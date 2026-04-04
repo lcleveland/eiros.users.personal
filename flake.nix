@@ -9,7 +9,6 @@
       import_modules = import ./resources/nix/import_modules.nix;
     in
     {
-      inputs = inputs;
       nixosModules.default = {
         imports = (import_modules ./users) ++ [
         ];
