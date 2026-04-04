@@ -17,11 +17,23 @@ let
     }) (lib.range 1 9)
   );
 
+  shiftedNumbers = [
+    "exclam"
+    "at"
+    "numbersign"
+    "dollar"
+    "percent"
+    "asciicircum"
+    "ampersand"
+    "asterisk"
+    "parenleft"
+  ];
+
   moveToTagBinds = builtins.listToAttrs (
-    map (n: {
+    lib.imap1 (n: key: {
       name = "move_to_tag_${toString n}";
-      value = mkBind [ "SUPER" "SHIFT" ] (toString n) "tag" (toString n);
-    }) (lib.range 1 9)
+      value = mkBind [ "SUPER" ] key "tag" (toString n);
+    }) shiftedNumbers
   );
 
   dirMap = {
