@@ -2,6 +2,11 @@
 {
   config.programs.vscode = {
     enable = true;
+    commandLineArgs = [
+      "--enable-features=UseOzonePlatform,WaylandWindowDecorations"
+      "--ozone-platform=wayland"
+      "--use-gl=egl"
+    ];
     extensions = with pkgs.vscode-extensions; [
       anthropic.claude-code
       continue.continue
