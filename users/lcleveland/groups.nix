@@ -4,7 +4,7 @@
     "wheel"
     "networkmanager"
     "libvirtd"
-    "podman"
+    "docker"
     "input"
     "comfyui"
   ];
