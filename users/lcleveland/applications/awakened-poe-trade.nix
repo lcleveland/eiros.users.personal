@@ -7,7 +7,7 @@
       buildInputs = [ pkgs.makeWrapper ];
       postBuild = ''
         wrapProgram $out/bin/awakened-poe-trade \
-          --add-flags "--disable-gpu"
+          --add-flags "--disable-gpu --no-overlay"
       '';
     })
   ];
