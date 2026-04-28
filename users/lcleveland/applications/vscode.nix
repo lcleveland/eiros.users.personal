@@ -6,12 +6,7 @@
       commandLineArgs = "--enable-features=UseOzonePlatform,WaylandWindowDecorations --ozone-platform=wayland --use-gl=egl";
     };
     extensions = with pkgs.vscode-extensions; [
-      (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-        mktplcRef = {
-          publisher = "anthropic";
-          name = "claude-code";
-        };
-      })
+      anthropic.claude-code
       continue.continue
       jnoortheen.nix-ide
       vscodevim.vim
