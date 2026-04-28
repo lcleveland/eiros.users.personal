@@ -10,8 +10,7 @@
         mktplcRef = {
           publisher = "anthropic";
           name = "claude-code";
-          version = "2.1.119";
-          sha256 = "sha256-oCW7PLHuowpDeXeIHnI51yqK2tvHpw1mXaVCBF3s3ME=";
+          version = "2.1.118";
         };
       })
       continue.continue
