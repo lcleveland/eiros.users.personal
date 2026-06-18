@@ -31,6 +31,9 @@ let
         icu
         openssl
         fontconfig
+        # The portable Python 3.10 StabilityMatrix downloads links against
+        # libcrypt.so.1, which only libxcrypt-legacy provides.
+        libxcrypt-legacy
       ];
 
     extraInstallCommands = ''
