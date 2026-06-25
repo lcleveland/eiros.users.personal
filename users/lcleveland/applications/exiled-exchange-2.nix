@@ -1,11 +1,11 @@
 { pkgs, lib, ... }:
 let
-  version = "0.15.0";
+  version = "0.15.8";
   pname = "exiled-exchange-2";
 
   src = pkgs.fetchurl {
     url = "https://github.com/Kvan7/Exiled-Exchange-2/releases/download/v${version}/Exiled-Exchange-2-${version}.AppImage";
-    hash = "sha256-THhGsptgZ90WU/ZXVWR/P5wV24uAFM5OGUgBUAhywMs=";
+    hash = "sha256-xmEvKJkRFJokzOa/6qRqT4+QKfnfjIoAfqP+oDqyxH8=";
   };
 
   appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
