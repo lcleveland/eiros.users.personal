@@ -10,8 +10,8 @@
         mktplcRef = {
           publisher = "anthropic";
           name = "claude-code";
-          version = "2.1.191";
-          sha256 = "sha256-y1fNUUHHiWJpWSx1EpknLZpWYDSOGmP8wGWRU0JoEuM=";
+          version = "2.1.212";
+          sha256 = "sha256-pPgl7MTzkBqZ/KatgAme7F6w873GLxZ1ZTYfkXzD4kw=";
         };
         postInstall = ''
           native_bin="$out/share/vscode/extensions/anthropic.claude-code/resources/native-binary/claude"
